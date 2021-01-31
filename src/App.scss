@@ -1,0 +1,23 @@
+.App {
+  @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@200;300;400;600&family=Raleway:ital,wght@0,200;0,300;0,700;1,200;1,700&display=swap');
+  /*  font-family: 'Josefin Sans', sans-serif;
+      font-family: 'Raleway', sans-serif;
+  */
+
+  @import 'scss/GlobalStyle';
+
+  a {
+    color: $linkColor;
+
+    &:hover {
+      color: $linkColorHover !important;
+      text-decoration: none;
+      transition: 0.5s ease !important;
+    };
+  };;
+
+  height: $fullHeight;
+  width: $fullWidth;
+  font-family: 'Raleway', sans-serif;
+  //text-align: center;
+}

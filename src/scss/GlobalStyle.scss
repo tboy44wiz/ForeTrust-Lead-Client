@@ -1,0 +1,27 @@
+//  Global Variables.
+$deviceHeight: 100vh;
+$deviceWidth: 100vw;
+$fullHeight: 100%;
+$fullWidth: 100%;
+
+
+$heading: 2.4rem;
+$fontSize: 1.6rem;
+$primaryColor: #112969;
+$secondaryColor: #c4c5c6;
+$linkColor: #ffffff;
+$linkColorHover: #9d9d9d;
+$colorOrange: #fc4a1a;
+
+$transitionDurationShort: 0.2s;
+$transitionDurationLong: 2s;
+
+
+.mCard {
+  box-shadow: 0 2px 4px 0 rgba(14,30,37,.3);
+  border-radius: 5px;
+  transition: 0.3s ease;
+}
+.mCard:hover {
+  box-shadow: 0 6px 12px 0 rgba(14,30,37,.12);
+}

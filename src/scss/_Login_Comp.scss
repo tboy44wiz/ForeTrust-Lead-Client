@@ -1,0 +1,167 @@
+@import "GlobalStyle";
+
+.LandingPageComp {
+  height: $deviceHeight;
+  background: linear-gradient(90deg, rgba(0, 104, 116, 0.7), rgba(0, 104, 116, 0.7)),
+              url("../assets/images/background_image.jpg") center no-repeat #43888F;
+  background-size: cover;
+
+  .main__wrapper {
+    height: $fullHeight;
+    width: $fullWidth;
+    display:  flex;
+    align-items: center;
+    justify-content: center;
+
+    .image_wrapper {
+      width: 50%;
+
+      .foreTrust-logo__image {
+        height: 80px;
+        margin: 0 auto;
+        display: block;
+      };
+    };
+
+    .form_wrapper {
+      width: 50%;
+      border-left: 1px solid #fc4a1a;
+      display: flex;
+      justify-content: center;
+
+      .login__form {
+        width: 400px;
+        padding: 30px 25px;
+        background: linear-gradient(rgba(40, 128, 138, 0.8), rgba(40, 128, 138, 0.8));
+
+        .form__heading {
+          color: #ffffff;
+          text-align: center;
+          font-weight: bolder;
+
+          &::before, &::after {
+            content: "";
+            height: 2px;
+            width: 20px;
+            margin: 0 3px;
+            background: red;
+            display: inline-block;
+          };
+        };
+
+        .form__label {
+          color: #ffffff;
+          font-size: 1.6rem;
+          font-weight: bold;
+        };
+        .input-box__wrapper {
+          width: 100%;
+          display: flex;
+
+          .form__input {
+            height: 40px;
+            min-width: 90%;
+            border: none;
+            border-radius: 50px;
+            color: #43888F;
+            font-size: 1.4rem;
+            font-weight: bold;
+            padding: 0 10px;
+
+            &::placeholder {
+              font-weight: normal;
+            };
+          };
+
+          .input--icons--suffix {
+            min-width: 33px;
+            margin-left: -33px;
+            padding: 9px 8px;
+            cursor: pointer;
+          };
+        };
+
+        .login__button {
+          height: 40px;
+          margin-top: 20px;
+          background: linear-gradient(45deg, rgb(0, 75, 83), rgb(0, 156, 169));
+          border: none;
+          border-radius: 200px;
+          color: #ffffff;
+          font-size: 1.6rem;
+          font-weight: bold;
+        };
+      };
+    };
+  };
+};
+
+
+
+
+
+
+
+/*=====================================================================================*/
+/*====================================== MEDIA QUERY ==================================*/
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+};
+
+/* Large devices (desktops, 992px and up) */
+@media (max-width: 992px) {
+  .LandingPageComp {
+    .main__wrapper {
+      .image_wrapper {
+      };
+      .form_wrapper {
+        .login__form {
+          width: 350px;
+        };
+      };
+    };
+  };
+};
+
+/* Medium devices (tablets, 768px and up) The navbar toggle appears at this breakpoint */
+@media (max-width: 768px) {
+  .LandingPageComp {
+    .main__wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      .image_wrapper {
+        width: 100%;
+      };
+      .form_wrapper {
+        width: 100%;
+        margin-top: 30px;
+        border-left: none;
+        display: flex;
+        justify-content: center;
+      };
+    };
+  };
+};
+
+/* Small devices (landscape phones, 576px and up) */
+@media (max-width: 576px) {
+  .LandingPageComp {
+    .main__wrapper {
+      .image_wrapper {
+        .foreTrust-logo__image {
+          height: 60px;
+        };
+      };
+      .form_wrapper {
+        .login__form {
+          width: 300px;
+          padding: 25px 20px;
+        };
+      };
+    };
+  };
+};
