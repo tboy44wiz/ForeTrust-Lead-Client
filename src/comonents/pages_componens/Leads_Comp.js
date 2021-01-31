@@ -8,7 +8,11 @@ const LeadsComp = () => {
     return (
         <ProtectedRouteHoc>
             <AppLayoutHOC>
-                <h1>Leads...</h1>
+
+                <div className="LeadsComp">
+                    <h1>Leads...</h1>
+                </div>
+
             </AppLayoutHOC>
         </ProtectedRouteHoc>
     );

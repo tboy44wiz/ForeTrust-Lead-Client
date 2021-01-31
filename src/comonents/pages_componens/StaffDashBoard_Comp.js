@@ -13,12 +13,9 @@ import '../../scss/pages_components_scss/_StaffDashBoard_Comp.scss';
 import {MdEventNote} from "react-icons/md";
 
 //  Import Images.
-import ProfileAvatar from '../../assets/images/profile_avatar.png';
 import AppLayoutHOC from "../layout_components/AppLayout_HOC";
 
 const StaffDashBoardComp = (props) => {
-
-    const { handleShowHideProfileOption } = useContext(AppStoreContext)
 
     const goToLeadsComp = () => {
         props.history.push("/leads");

@@ -1,7 +1,7 @@
 @import "../GlobalStyle";
 
 .StaffDashBoardComp {
-  height: $fullHeight;
+  height: calc(100vh - 120px);
   width: $fullWidth;
 
   display: grid;
@@ -9,29 +9,25 @@
   grid-template-rows: [stafBodyWrapper-start] 1fr [stafBodyWrapper-endt];
 
   .staff-dashboard-body__wrapper {
-    margin-top: 3rem;
+    padding: 3rem 1rem;
     overflow-y: scroll;
-    scrollbar-width: none;
 
     &::-webkit-scrollbar-thumb {
       border-radius: 10px;
       background: $secondaryColor;
     };
     &::-webkit-scrollbar {
-      width: 5px;
+      width: 0;
     };
 
     grid-column: col-start / col-end;
     grid-row: stafBodyWrapper-start / stafBodyWrapper-endt;
 
-  /*==== Page Title ====*/
+    /*==== Page Title ====*/
     .page__title {
       font-family: 'Josefin Sans', sans-serif;
       font-weight: bold;
       color: #006874;
-
-      grid-column: col-start / col-end;
-      grid-row: pageTitle-start / pageTitle-end;
 
       &::after {
         content: "";
@@ -44,15 +40,15 @@
     };
 
     .mCards__wrapper {
-      margin-top: 10px;
-
-      display: grid;
-      grid-template-columns: repeat(6, [bodyCol-start] 1fr [bodyCol-end]);
-      grid-template-rows: min-content 60rem min-content;
-      grid-gap: 3rem;
+      padding-top: 10px;
 
       grid-column: bodyCol-start / bodyCol-end;
       grid-row: 1 / 2;
+
+      display: grid;
+      grid-template-columns: repeat(6, [bodyCol-start] 1fr [bodyCol-end]);
+      grid-template-rows: min-content;
+      grid-gap: 3rem;
 
       .mCard__item {
         padding: 2rem 1.5rem;
@@ -60,6 +56,22 @@
 
         display: flex;
         justify-content: space-between;
+
+        div {
+          //text-align: right;
+
+          h2 {
+            margin: 0;
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 3.5rem;
+          };
+          p {
+            margin-top: 10px;
+            margin-bottom: 0;
+            font-family: 'Raleway', sans-serif;
+            font-size: 1.5rem;
+          };
+        };
 
         .mCard__item--icon {
           height: 40px;
@@ -79,21 +91,6 @@
         .un-event__icon {
           background: rgba(255, 89, 0, 0.2);
           color: rgb(255, 89, 0);
-        };
-
-        div {
-          //text-align: right;
-
-          h2 {
-            margin: 0;
-            font-family: 'Josefin Sans', sans-serif;
-            font-size: 3.5rem;
-          };
-          p {
-            margin: 0;
-            font-family: 'Raleway', sans-serif;
-            font-size: 1.5rem;
-          };
         };
       };
       .item__one {

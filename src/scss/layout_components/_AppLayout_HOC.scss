@@ -1,11 +1,10 @@
 @import "../GlobalStyle";
 
 .AppLayoutComp {
-  height: $deviceHeight;
+  height: $fullHeight;
   width: $fullWidth;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 
   display: grid;
   grid-template-columns: [col-start] 1fr [col-end];
@@ -17,6 +16,7 @@
     font-family: 'Raleway', sans-serif;
     border-bottom: 1px solid #c0c0c1;
     padding: 10px 20px;
+    box-sizing: border-box;
 
     grid-column: col-start / col-end;
     grid-row: appHeader-start / appHeader-end;
@@ -49,9 +49,53 @@
         };
       };
     };
+
+    .drop-down-menu {
+      width: 170px;
+      margin-top: 130px;
+      border: none;
+      border-radius: 3px;
+      -webkit-box-shadow: 0 0 25px rgba(0, 0, 0, .15);
+      box-shadow: 0 0 25px rgba(0, 0, 0, .15);
+      background: white;
+      position: absolute;
+      right: 10px;
+
+      &::before {
+        content: "";
+        height: 15px;
+        width: 15px;
+        margin-top: -8px;
+        background: white;
+        display: inline-block;
+        position: absolute;
+        right: 27px;
+        transform: rotate(45deg);
+        z-index: 1;
+      };
+
+      .profile-dropdown__item {
+        padding: 10px 15px;
+        line-height: 1.2;
+        color: #777ab2;
+
+        display: flex;
+        align-items: center;
+
+        .dropdown__icon {
+          margin-right: 10px;
+        };
+
+        &:hover {
+          background: linear-gradient(#ffffff, #f6f6f8);
+        }
+      };
+    };
   };
 
   .app-body__wrapper {
+    height: $fullHeight;
+    width: $fullWidth;
 
     grid-column: col-start / col-end;
     grid-row: appBody-start / appBody-end;
