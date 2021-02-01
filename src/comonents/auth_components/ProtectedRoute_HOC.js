@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import jwt_decode from "jwt-decode";
 import { CircleLoader } from "react-spinners";
 import { css } from "@emotion/react";
@@ -14,22 +14,15 @@ const customEmotionCSS = css`
     transform: translate(-50%, -50%)
 `;
 
-const ProtectedRouteHoc = (props) => {
+const ProtectedRouteHOC = (props) => {
 
     // const {} = useContext(AppStoreContext)
-
-    useEffect(() => {
-        checkLoginStatus();
-        /*(async () => {
-            await checkLoginStatus()
-        })()*/
-    });
 
     const [state, setState] = useState({
         isAuthenticated: false
     });
 
-    const checkTokenExpiration = (staffLoginData) => {
+    const checkTokenExpiration = async (staffLoginData) => {
 
         if (staffLoginData !== null) {
             //  Decode the Token.
@@ -47,12 +40,12 @@ const ProtectedRouteHoc = (props) => {
             return false;
         }
     }
-    const checkLoginStatus = () => {
+    const checkLoginStatus = useCallback(async () => {
         //  Get Staff Data from the Browsers Local Storage.
-        let staffLoginData = localStorage.getItem("staffData");
+        let staffLoginData = await localStorage.getItem("staffData");
 
         if (staffLoginData !== null) {
-            if (checkTokenExpiration(JSON.parse(staffLoginData))) {
+            if (await checkTokenExpiration(JSON.parse(staffLoginData))) {
                 //  Set to state
                 return setState((prevState) => ({
                     ...prevState,
@@ -81,7 +74,15 @@ const ProtectedRouteHoc = (props) => {
             // return props.history.replace("/");
             return window.open("/", '_self');
         }
-    }
+    }, []);
+
+    useEffect(() => {
+        // checkLoginStatus();
+        (async () => {
+            await checkLoginStatus()
+        })()
+    }, [checkLoginStatus]);
+
 
     return (
         <>
@@ -98,4 +99,4 @@ const ProtectedRouteHoc = (props) => {
     );
 };
 
-export default ProtectedRouteHoc;
+export default ProtectedRouteHOC;

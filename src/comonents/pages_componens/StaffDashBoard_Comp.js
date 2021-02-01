@@ -1,19 +1,19 @@
-import React, {useContext} from 'react';
+import React from 'react';
 
-/*==== Import AppStoreContext HOC ====*/
-import {AppStoreContext} from "../../contexts/AppContextProvider";
 
-/*==== Import ProtectedRouteHoc HOC ====*/
-import ProtectedRouteHoc from '../auth_components/ProtectedRoute_HOC';
+/*==== Import ProtectedRouteHoc and AppLayoutHOC HOC ====*/
+import ProtectedRouteHOC from '../auth_components/ProtectedRoute_HOC';
+import AppLayoutHOC from "../layout_components/AppLayout_HOC";
 
 //  Import _StaffDashBoard_Comp scss.
 import '../../scss/pages_components_scss/_StaffDashBoard_Comp.scss';
 
 //  Import React-Icons.
+import {AiOutlineProject} from "react-icons/ai";
 import {MdEventNote} from "react-icons/md";
+import {SiGoogleads} from "react-icons/si";
 
 //  Import Images.
-import AppLayoutHOC from "../layout_components/AppLayout_HOC";
 
 const StaffDashBoardComp = (props) => {
 
@@ -22,14 +22,14 @@ const StaffDashBoardComp = (props) => {
     }
 
     return (
-        <ProtectedRouteHoc>
+        <ProtectedRouteHOC>
             <AppLayoutHOC>
                 <div className="StaffDashBoardComp">
-                    {/*==== OrganizerDashboard  Body Wrapper ====*/}
-                    <div className="container staff-dashboard-body__wrapper">
+                    {/*==== StaffDashboard  Body Wrapper ====*/}
+                    <div className="container staff-dashboard-main__wrapper">
 
                         {/*==== Page Title ====*/}
-                        <h1 className="page__title">Dashboard</h1>
+                        <h1 className="staff-dashboard-page__title">Dashboard</h1>
 
                         {/*==== mCards Wrapper ====*/}
                         <div className="mCards__wrapper">
@@ -40,7 +40,7 @@ const StaffDashBoardComp = (props) => {
                                     <h2>12</h2>
                                     <p>Leads</p>
                                 </div>
-                                <MdEventNote className="mCard__item--icon t-event__icon" />
+                                <SiGoogleads className="mCard__item--icon t-event__icon" />
                             </div>
 
                             <div className="mCard mCard__item item__two">
@@ -48,7 +48,7 @@ const StaffDashBoardComp = (props) => {
                                     <h2>11</h2>
                                     <p>Projects</p>
                                 </div>
-                                <MdEventNote className="mCard__item--icon c-event__icon" />
+                                <AiOutlineProject className="mCard__item--icon c-event__icon" />
                             </div>
 
                             <div className="mCard mCard__item item__three">
@@ -63,7 +63,7 @@ const StaffDashBoardComp = (props) => {
 
                 </div>
             </AppLayoutHOC>
-        </ProtectedRouteHoc>
+        </ProtectedRouteHOC>
     );
 };
 

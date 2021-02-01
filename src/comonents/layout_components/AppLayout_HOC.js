@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from "react-router-dom";
 import AppHeaderComp from "./AppHeader_Comp";
 import AppFooterComp from "./AppFooter_Comp";
 
@@ -18,4 +19,4 @@ const AppLayoutHOC = (props) => {
     );
 };
 
-export default AppLayoutHOC;
+export default withRouter(AppLayoutHOC);

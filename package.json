@@ -19,6 +19,7 @@
     "react-scripts": "4.0.1",
     "react-spinners": "^0.10.4",
     "react-toastify": "^7.0.1",
+    "react-tooltip": "^4.2.13",
     "web-vitals": "^0.2.4",
     "yup": "^0.32.8"
   },

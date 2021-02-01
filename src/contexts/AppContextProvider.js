@@ -3,10 +3,14 @@ import { withRouter } from "react-router-dom";
 import axios from "axios";
 import { toast } from 'react-toastify';
 
-import { staffLogin } from "../utils/Yup_Validator";
-import { staff_login_url } from "../routes/API_Routes";
+import {leadValidation, staffLogin} from "../utils/Yup_Validator";
+import {createLeads_url, deleteSingleLead_url, getAllLeads_url, staff_login_url} from "../routes/API_Routes";
+
+//  Import React Toastify CSS.
+import 'react-toastify/dist/ReactToastify.css';
 
 export const AppStoreContext = createContext(undefined);
+
 
 //  Call th Toast Configuration method.
 toast.configure();
@@ -17,6 +21,15 @@ class AppContextProvider extends React.Component {
 
         this.state = {
             staff: {},
+            lead: {
+                leads_name: "",
+                leads_email: "",
+                leads_phone: "",
+                leads_state: "",
+                leads_address: "",
+                purpose: ""
+            },
+            leads: [],
             email: '',
             password: '',
             infoMessage: "",
@@ -29,13 +42,13 @@ class AppContextProvider extends React.Component {
     //  React Toast  Custom Methods.
     successToast = (message) => {
         return toast.success(message);
-    }
+    };
     warningToast = (message) => {
-        return toast.warn(message,);
+        return toast.warning(message, {autoClose: 2000});
     }
     errorToast = (message) => {
         return toast.error(message);
-    }
+    };
 
     //  Input Change Handler.
     handleInputChange = (event) => {
@@ -44,7 +57,17 @@ class AppContextProvider extends React.Component {
             [event.target.name]: event.target.value,
             infoMessage: "",
         });
-    }
+    };
+
+    //  Lead Input Change Handler.
+    handleLeadInputChange = (event) => {
+        this.setState({
+            lead: {
+                ...this.state.lead,
+                [event.target.name]: event.target.value,
+            },
+        });
+    };
 
     //  Handle Show Password.
     handleShowPassword = () => {
@@ -91,11 +114,15 @@ class AppContextProvider extends React.Component {
                 //  Save Staff data to Local Storage.
                 localStorage.setItem('staffData', JSON.stringify(staff));
 
+                const successMessage = response.data.message;
+                this.successToast(successMessage);
+
                 //  Update the date with the necessary data.
                 this.setState({
                     ...this.state,
                     staff:staff,
                     isLoading: false,
+                    isAuthenticated: true,
                 });
 
                 //  Navigate to the Staff DashBoard.
@@ -105,18 +132,221 @@ class AppContextProvider extends React.Component {
             //  Update the State.
             this.setState({
                 ...this.state,
-                infoMessage: "",
+                infoMessage: "Something went wrong. Please try again.",
                 isLoading: false,
+                isAuthenticated: false,
             });
         }
         catch (error) {
+            const errorMessage = error.response.data.message;
+            this.errorToast(errorMessage);
             this.setState({
                 ...this.state,
                 isLoading: false,
             });
-            this.errorToast(error.errors[0]);
         }
-    }
+    };
+
+    //  Create Single Lead.
+    createLead = async (event) => {
+        event.preventDefault();
+
+        //  Clear the state infoMessage and set showPassword to "false".
+        this.setState({
+            ...this.state,
+            infoMessage: "",
+            isLoading: true,
+        });
+
+        //  Destructure the required form data from the state.
+        const { leads_name, leads_email, leads_phone, leads_state, leads_address, purpose } = this.state.lead;
+
+        //  Validate the form data which is the "reqBody" using yup and then call the API.
+        try {
+            const leadData = await leadValidation.validate({
+                leads_name,
+                leads_email,
+                leads_phone,
+                leads_state,
+                leads_address,
+                purpose,
+            });
+
+            //  Get the Token.
+            const staffLoginData = await localStorage.getItem('staffData');
+
+            let token;
+            if (staffLoginData !== null) {
+                token = JSON.parse(staffLoginData).token;
+            }
+
+            //  Make POST Call to the EndPoint
+            const response = await axios({
+                method: "post",
+                url: createLeads_url,
+                data: leadData,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `${token}`
+                },
+            });
+
+            if (response.data.success) {
+
+                // Save to State.
+                this.setState({
+                    ...this.state,
+                    isLoading: false,
+                });
+
+                //  Recall "handleFetchLeads()" function.
+                return await this.handleFetchLeads();
+            }
+            // Reset State.
+            return this.setState({
+                ...this.state,
+                isLoading: false,
+            });
+        }
+        catch (error) {
+            const errorMessage = error.response.data.message;
+            this.errorToast(errorMessage);
+            this.setState({
+                ...this.state,
+                isLoading: false,
+                isCreateLeadSuccessful: false,
+            });
+        }
+    };
+
+    //  Fetch All Leads.
+    handleFetchLeads = async () => {
+        this.setState({
+            isLoading: true,
+        });
+
+        try {
+            //  Get the Token.
+            const staffLoginData = await localStorage.getItem('staffData');
+
+            let token;
+            if (staffLoginData !== null) {
+                token = JSON.parse(staffLoginData).token;
+            }
+
+            //  Make POST Call to the EndPoint
+            const response = await axios({
+                method: "get",
+                url: getAllLeads_url,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `${token}`
+                },
+            });
+
+            if (response.data.success) {
+                const leads = response.data.data.leads;
+
+                // Save to State.
+                return this.setState({
+                    ...this.state,
+                    leads: leads,
+                    isLoading: false,
+                });
+            }
+            // Reset State.
+            return this.setState({
+                ...this.state,
+                isLoading: false,
+            });
+        }
+        catch (error) {
+            const status = error.response.status;
+            const errorMessage = error.response.data.message;
+            console.log(error.response.data);
+
+            if (status === 404) {
+                const leads = error.response.data.data.leads;
+
+                this.warningToast(errorMessage);
+
+                //  Update State.
+                this.setState({
+                    ...this.state,
+                    leads: leads,
+                    isLoading: false,
+                });
+            }
+            else {
+                this.errorToast(errorMessage);
+
+                //  Update State.
+                this.setState({
+                    ...this.state,
+                    isLoading: false,
+                });
+            }
+        }
+    };
+
+    //  Delete Single Lead.
+    handleDeleteLead = async (leadId) => {
+
+        try {
+            //  Get the Token.
+            const staffLoginData = await localStorage.getItem('staffData');
+
+            let token;
+            if (staffLoginData !== null) {
+                token = JSON.parse(staffLoginData).token;
+            }
+
+            //  Make a DELETE call to the API.
+            const response = await axios({
+                method: 'delete',
+                url: `${deleteSingleLead_url}/${leadId}`,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `${token}`
+                },
+            });
+
+            if (response.data.success) {
+                const successMessage = response.data.message;
+                const leads = response.data.data.leads;
+                this.successToast(successMessage);
+
+                // Save to State.
+                return this.setState({
+                    ...this.state,
+                    leads: leads,
+                    isLoading: false,
+                });
+
+                //  Call the "handleFetchLeads()" method again.
+                // await this.handleFetchLeads();
+            }
+        }
+        catch (error) {
+            const status = error.response.status;
+            const errorMessage = error.response.data.message;
+            const leads = error.response.data.data.leads;
+
+            if (status === 404) {
+                this.warningToast(errorMessage);
+            }
+            else {
+                this.errorToast(errorMessage);
+            }
+
+            //  Update State.
+            this.setState({
+                ...this.state,
+                leads: leads,
+                isLoading: false,
+            });
+        }
+    };
 
 
     render() {
@@ -124,8 +354,12 @@ class AppContextProvider extends React.Component {
             <AppStoreContext.Provider value={{
                 ...this.state,
                 handleInputChange: this.handleInputChange,
+                handleLeadInputChange: this.handleLeadInputChange,
                 handleShowPassword: this.handleShowPassword,
                 handleLoginUser: this.handleLoginUser,
+                createLead: this.createLead,
+                handleFetchLeads: this.handleFetchLeads,
+                handleDeleteLead: this.handleDeleteLead,
             }}>
                 { this.props.children }
             </AppStoreContext.Provider>

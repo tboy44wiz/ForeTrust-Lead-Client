@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Link} from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 
 //  Import _AppLayout_HOC scss.
 import '../../scss/layout_components/_AppLayout_HOC.scss';
@@ -11,7 +11,7 @@ import { RiUser6Line, RiLogoutCircleRLine } from 'react-icons/ri';
 import ProfileAvatar from '../../assets/images/profile_avatar.png';
 import BrandLogo from '../../assets/images/foretrust_logo_teal.png';
 
-const AppHeaderComp = () => {
+const AppHeaderComp = (props) => {
 
     const [state, setState] = useState({
         isShowHideProfileDropdown: false,
@@ -24,9 +24,9 @@ const AppHeaderComp = () => {
         }));
     }
     const logoutUser = () => {
-        localStorage.clear();
-        this.props.history.replace("/login")
-    }
+        localStorage.removeItem('staffData');
+        props.history.replace("/");
+    };
 
     return (
         <div className="AppHeaderComp">
@@ -56,4 +56,4 @@ const AppHeaderComp = () => {
     );
 };
 
-export default AppHeaderComp;
+export default withRouter(AppHeaderComp);

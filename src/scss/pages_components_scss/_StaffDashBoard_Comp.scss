@@ -8,7 +8,7 @@
   grid-template-columns: [col-start] $fullWidth [col-end];
   grid-template-rows: [stafBodyWrapper-start] 1fr [stafBodyWrapper-endt];
 
-  .staff-dashboard-body__wrapper {
+  .staff-dashboard-main__wrapper {
     padding: 3rem 1rem;
     overflow-y: scroll;
 
@@ -24,7 +24,7 @@
     grid-row: stafBodyWrapper-start / stafBodyWrapper-endt;
 
     /*==== Page Title ====*/
-    .page__title {
+    .staff-dashboard-page__title {
       font-family: 'Josefin Sans', sans-serif;
       font-weight: bold;
       color: #006874;
@@ -40,10 +40,7 @@
     };
 
     .mCards__wrapper {
-      padding-top: 10px;
-
-      grid-column: bodyCol-start / bodyCol-end;
-      grid-row: 1 / 2;
+      margin-top: 10px;
 
       display: grid;
       grid-template-columns: repeat(6, [bodyCol-start] 1fr [bodyCol-end]);
