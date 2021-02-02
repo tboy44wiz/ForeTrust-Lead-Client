@@ -54,7 +54,7 @@ const AppHeaderComp = (props) => {
                 <span onClick={ handleShowHideProfileOption } className="dropdown-toggle profile__dropdown">
                     <img src={ ProfileAvatar } alt="Profile User" className="rounded-avatar"/>
                 </span>
-                <h3 className="admin__name">{state.staffName}</h3>
+                <h3 className="admin__name">{state.staffName.split(" ")[0]}</h3>
             </div>
             {
                 (state.isShowHideProfileDropdown) ? (

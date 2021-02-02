@@ -44,7 +44,6 @@ class AppContextProvider extends React.Component {
             showPassword: false,
             isLoading: false,
             isAuthenticated: false,
-            isEditMood: false,
         }
     }
 
@@ -90,6 +89,7 @@ class AppContextProvider extends React.Component {
                 leads_address: "",
                 purpose: ""
             },
+            isEditMood: false,
         });
     };
 

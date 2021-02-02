@@ -223,6 +223,7 @@ const LeadsComp = () => {
                                             <p className="form__description">Complete leads creation form.</p>
                                         </div>
 
+                                        <p>None Edit Mood.</p>
                                         <div className="form-group lead__name">
                                             <label htmlFor="leadName">Lead name</label>
                                             <input type="text" id="leadName" name="leads_name" value={ lead.leads_name }
@@ -283,6 +284,7 @@ const LeadsComp = () => {
                                             <p className="form__description">Complete leads creation form.</p>
                                         </div>
 
+                                        <p>Edit Mood</p>
                                         <div className="form-group lead__name">
                                             <label htmlFor="leadName">Lead name</label>
                                             <input type="text" id="leadName" name="leads_name" value={ lead.leads_name }
