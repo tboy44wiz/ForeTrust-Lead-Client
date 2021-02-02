@@ -44,7 +44,8 @@ class AppContextProvider extends React.Component {
             showPassword: false,
             isLoading: false,
             isAuthenticated: false,
-        }
+        };
+        this.modalRef = React.createRef();
     }
 
     //  React Toast  Custom Methods.
@@ -478,7 +479,7 @@ class AppContextProvider extends React.Component {
 
     render() {
         return (
-            <AppStoreContext.Provider value={{
+            <AppStoreContext.Provider ref={this.modalRef} value={{
                 ...this.state,
                 handleInputChange: this.handleInputChange,
                 handleLeadInputChange: this.handleLeadInputChange,
