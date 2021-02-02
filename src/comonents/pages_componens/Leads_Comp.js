@@ -29,15 +29,19 @@ const customEmotionCSS = css`
 
 const LeadsComp = () => {
 
-    const { isLoading, handleFetchLeads, handleDeleteLead, handleLeadInputChange, createLead, lead, leads } = useContext(AppStoreContext);
+    const { isLoading, isEditMood, lead, leads,
+        handleFetchLeads, deleteLead, handleLeadInputChange, extractSingleLead, createLead, updateLead,
+        clearFormInputFields } = useContext(AppStoreContext);
 
     const [state, setState] = useState({
+        leadId: "",
         showLeadModal: false,
         showCancelModal: false,
+        showDeleteModal: false,
     });
 
     const handleShowLeadModal = () => {
-        setState(prevState => ({
+        setState((prevState) => ({
             ...prevState,
             showLeadModal: true,
         }))
@@ -57,25 +61,50 @@ const LeadsComp = () => {
         }));
     };
     const handleCloseCancelModal = () => {
+        // Clear the Form.
+        clearFormInputFields();
+
         setState((prevState) => ({
             ...prevState,
             showCancelModal: false,
         }));
     };
 
-    // console.log(isCreateLeadSuccessful, "Worked..");
     const handleLeadSubmit = (event) => {
         createLead(event);
         handleCloseLeadModal();
     };
-
-    /*if (isCreateLeadSuccessful) {
-        console.log(isCreateLeadSuccessful, "Worked..");
+    const handleLeadUpdate = (event, leadId) => {
+        updateLead(event, leadId);
         handleCloseLeadModal();
+    };
+
+    /*==== Delete Lead Modal ====*/
+    const handleShowDeleteLeadModal = (leadId) => {
+        setState((prevState) => ({
+            ...prevState,
+            leadId: leadId,
+            showDeleteModal: true,
+        }));
+    };
+    const handleCloseDeleteModal = () => {
+        setState((prevState) => ({
+            ...prevState,
+            showDeleteModal: false,
+        }));
+    };
+    const handleDeleteLead = (leadId) => {
+        deleteLead(leadId);
+        handleCloseDeleteModal();
     }
-    else {
-        console.log(isCreateLeadSuccessful, "Worked..");
-    }*/
+
+    const handleEditSingleLead = (leadId) => {
+        //  Call the "editSingleLead" function.
+        extractSingleLead(leadId);
+
+        //  Then open the handleShowLeadModal with Edit features.
+        handleShowLeadModal();
+    };
 
     useEffect(() => {
         handleFetchLeads();
@@ -141,8 +170,8 @@ const LeadsComp = () => {
                                                     <td>{ eachLead.purpose }</td>
                                                     <td>
                                                         <div className="action-button-wrapper">
-                                                            <FiEdit3 className="edit__icon" data-tip="Edit lead" />
-                                                            <AiOutlineDelete onClick={ () => { handleDeleteLead(eachLead.id) } } className="delete__icon" data-tip="Delete lead"/>
+                                                            <FiEdit3 onClick={ () => handleEditSingleLead(eachLead.id) } className="edit__icon" data-tip="Edit lead" />
+                                                            <AiOutlineDelete onClick={ () => handleShowDeleteLeadModal(eachLead.id) } className="delete__icon" data-tip="Delete lead"/>
                                                             <ReactTooltip
                                                                 place="bottom"
                                                                 backgroundColor="rgba(255, 74, 26, 0.5)"
@@ -186,65 +215,129 @@ const LeadsComp = () => {
                     >
                         <Modal.Body className="modal__body">
                             <h1 className="lead-form__heading">Create a Lead.</h1>
-                            <form onSubmit={ event => handleLeadSubmit(event) } className='lead__form'>
-                                <div className="form-title-and-description__wrapper">
-                                    <h3 className="form__title">Leads Info</h3>
-                                    <p className="form__description">Complete leads creation form.</p>
-                                </div>
+                            {
+                                (!isEditMood) ? (
+                                    <form onSubmit={ event => handleLeadSubmit(event) } className='lead__form'>
+                                        <div className="form-title-and-description__wrapper">
+                                            <h3 className="form__title">Leads Info</h3>
+                                            <p className="form__description">Complete leads creation form.</p>
+                                        </div>
 
-                                <div className="form-group lead__name">
-                                    <label htmlFor="leadName">Lead name</label>
-                                    <input type="text" id="leadName" name="leads_name" value={ lead.leads_name }
-                                           onChange={ (event => handleLeadInputChange(event)) }
-                                           className="form-control"
-                                           placeholder="Name of the lead." />
-                                </div>
+                                        <div className="form-group lead__name">
+                                            <label htmlFor="leadName">Lead name</label>
+                                            <input type="text" id="leadName" name="leads_name" value={ lead.leads_name }
+                                                   onChange={ (event => handleLeadInputChange(event)) }
+                                                   className="form-control"
+                                                   placeholder="Name of the lead." />
+                                        </div>
 
-                                <div className="form-group lead__email">
-                                    <label htmlFor="leadEmail">Lead email</label>
-                                    <input type="email" id="leadEmail" name="leads_email" value={ lead.leads_email }
-                                           onChange={ (event => handleLeadInputChange(event)) }
-                                           className="form-control"
-                                           placeholder="Email of the lead." />
-                                </div>
+                                        <div className="form-group lead__email">
+                                            <label htmlFor="leadEmail">Lead email</label>
+                                            <input type="email" id="leadEmail" name="leads_email" value={ lead.leads_email }
+                                                   onChange={ (event => handleLeadInputChange(event)) }
+                                                   className="form-control"
+                                                   placeholder="Email of the lead." />
+                                        </div>
 
-                                <div className="form-group lead__phone">
-                                    <label htmlFor="leadPhone">Lead phone</label>
-                                    <input type="text" id="leadPhone" name="leads_phone" value={ lead.leads_phone }
-                                           onChange={ (event => handleLeadInputChange(event)) }
-                                           className="form-control"
-                                           placeholder="Phone number of the lead." />
-                                </div>
+                                        <div className="form-group lead__phone">
+                                            <label htmlFor="leadPhone">Lead phone</label>
+                                            <input type="text" id="leadPhone" name="leads_phone" value={ lead.leads_phone }
+                                                   onChange={ (event => handleLeadInputChange(event)) }
+                                                   className="form-control"
+                                                   placeholder="Phone number of the lead." />
+                                        </div>
 
-                                <div className="form-group lead__state">
-                                    <label htmlFor="leadState">Lead state</label>
-                                    <input type="text" id="leadState" name="leads_state" value={ lead.leads_state }
-                                           onChange={ (event => handleLeadInputChange(event)) }
-                                           className="form-control"
-                                           placeholder="State of the lead." />
-                                </div>
+                                        <div className="form-group lead__state">
+                                            <label htmlFor="leadState">Lead state</label>
+                                            <input type="text" id="leadState" name="leads_state" value={ lead.leads_state }
+                                                   onChange={ (event => handleLeadInputChange(event)) }
+                                                   className="form-control"
+                                                   placeholder="State of the lead." />
+                                        </div>
 
-                                <div className="form-group lead__address">
-                                    <label htmlFor="leadAddress">Lead address</label>
-                                    <input type="text" id="leadAddress" name="leads_address" value={ lead.leads_address }
-                                           onChange={ (event => handleLeadInputChange(event)) }
-                                           className="form-control"
-                                           placeholder="Address of the lead." />
-                                </div>
+                                        <div className="form-group lead__address">
+                                            <label htmlFor="leadAddress">Lead address</label>
+                                            <input type="text" id="leadAddress" name="leads_address" value={ lead.leads_address }
+                                                   onChange={ (event => handleLeadInputChange(event)) }
+                                                   className="form-control"
+                                                   placeholder="Address of the lead." />
+                                        </div>
 
-                                <div className="form-group purpose">
-                                    <label htmlFor="leadPurpose">Event purpose</label>
-                                    <textarea id="leadPurpose" rows="4" name="purpose" value={ lead.purpose }
-                                              onChange={ (event => handleLeadInputChange(event)) }
-                                              className="form-control"
-                                              placeholder="Leads purpose" />
-                                </div>
+                                        <div className="form-group purpose">
+                                            <label htmlFor="leadPurpose">Event purpose</label>
+                                            <textarea id="leadPurpose" rows="4" name="purpose" value={ lead.purpose }
+                                                      onChange={ (event => handleLeadInputChange(event)) }
+                                                      className="form-control"
+                                                      placeholder="Leads purpose" />
+                                        </div>
 
-                                <div className="button__wrapper">
-                                    <Button onClick={ ShowCancelModal } className="button cancel__button">Cancel</Button>
-                                    <Button type="submit" className="button submit__button">Submit</Button>
-                                </div>
-                            </form>
+                                        <div className="button__wrapper">
+                                            <Button onClick={ ShowCancelModal } className="button cancel__button">Cancel</Button>
+                                            <Button type="submit" className="button submit__button">Submit</Button>
+                                        </div>
+                                    </form>
+                                ) : (
+                                    <form onSubmit={ event => handleLeadUpdate(event, lead.id) } className='lead__form'>
+                                        <div className="form-title-and-description__wrapper">
+                                            <h3 className="form__title">Leads Info</h3>
+                                            <p className="form__description">Complete leads creation form.</p>
+                                        </div>
+
+                                        <div className="form-group lead__name">
+                                            <label htmlFor="leadName">Lead name</label>
+                                            <input type="text" id="leadName" name="leads_name" value={ lead.leads_name }
+                                                   onChange={ (event => handleLeadInputChange(event)) }
+                                                   className="form-control"
+                                                   placeholder="Name of the lead." />
+                                        </div>
+
+                                        <div className="form-group lead__email">
+                                            <label htmlFor="leadEmail">Lead email</label>
+                                            <input type="email" id="leadEmail" name="leads_email" value={ lead.leads_email }
+                                                   onChange={ (event => handleLeadInputChange(event)) }
+                                                   className="form-control"
+                                                   placeholder="Email of the lead." />
+                                        </div>
+
+                                        <div className="form-group lead__phone">
+                                            <label htmlFor="leadPhone">Lead phone</label>
+                                            <input type="text" id="leadPhone" name="leads_phone" value={ lead.leads_phone }
+                                                   onChange={ (event => handleLeadInputChange(event)) }
+                                                   className="form-control"
+                                                   placeholder="Phone number of the lead." />
+                                        </div>
+
+                                        <div className="form-group lead__state">
+                                            <label htmlFor="leadState">Lead state</label>
+                                            <input type="text" id="leadState" name="leads_state" value={ lead.leads_state }
+                                                   onChange={ (event => handleLeadInputChange(event)) }
+                                                   className="form-control"
+                                                   placeholder="State of the lead." />
+                                        </div>
+
+                                        <div className="form-group lead__address">
+                                            <label htmlFor="leadAddress">Lead address</label>
+                                            <input type="text" id="leadAddress" name="leads_address" value={ lead.leads_address }
+                                                   onChange={ (event => handleLeadInputChange(event)) }
+                                                   className="form-control"
+                                                   placeholder="Address of the lead." />
+                                        </div>
+
+                                        <div className="form-group purpose">
+                                            <label htmlFor="leadPurpose">Event purpose</label>
+                                            <textarea id="leadPurpose" rows="4" name="purpose" value={ lead.purpose }
+                                                      onChange={ (event => handleLeadInputChange(event)) }
+                                                      className="form-control"
+                                                      placeholder="Leads purpose" />
+                                        </div>
+
+                                        <div className="button__wrapper">
+                                            <Button onClick={ ShowCancelModal } className="button cancel__button">Cancel</Button>
+                                            <Button type="submit" className="button submit__button">Submit</Button>
+                                        </div>
+                                    </form>
+                                )
+                            }
                         </Modal.Body>
                     </Modal>
 
@@ -264,6 +357,25 @@ const LeadsComp = () => {
                         <Modal.Footer className="modal__footer">
                             <Button onClick={ handleCloseCancelModal } className="button cancel__button">No</Button>
                             <Button variant="primary" onClick={ handleCloseLeadModal } className="button submit__button">Yes</Button>
+                        </Modal.Footer>
+                    </Modal>
+
+                    {/*==== Confirm Delete Dialog Modal ====*/}
+                    <Modal
+                        show={ state.showDeleteModal }
+                        onHide={ handleCloseDeleteModal }
+                        backdrop="static"
+                        keyboard={false}
+                        className="confirm__modal"
+                    >
+                        <Modal.Body className="confirm-modal__body">
+                            <h1 className="lead__heading">Confirm Delete?</h1>
+                            <p>Are you sure you want to continue this action?</p>
+                        </Modal.Body>
+
+                        <Modal.Footer className="modal__footer">
+                            <Button onClick={ handleCloseDeleteModal } className="button cancel__button">No</Button>
+                            <Button variant="primary" onClick={ () => handleDeleteLead(state.leadId) } className="button submit__button">Yes</Button>
                         </Modal.Footer>
                     </Modal>
                 </div>

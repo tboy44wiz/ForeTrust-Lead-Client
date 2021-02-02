@@ -10,4 +10,5 @@ export const staff_login_url = `${base_url}/staff/login`;
 export const createLeads_url = `${base_url}/lead/create_lead`;
 export const getAllLeads_url = `${base_url}/lead/all_leads`;
 export const getSingleLead_url = `${base_url}/lead/single_lead`;
+export const updateSingleLead_url = `${base_url}/lead/update_lead`;
 export const deleteSingleLead_url = `${base_url}/lead/delete_lead`;

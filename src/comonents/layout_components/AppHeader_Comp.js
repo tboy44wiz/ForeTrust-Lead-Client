@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import { Link, withRouter } from "react-router-dom";
 
 //  Import _AppLayout_HOC scss.
@@ -14,8 +14,25 @@ import BrandLogo from '../../assets/images/foretrust_logo_teal.png';
 const AppHeaderComp = (props) => {
 
     const [state, setState] = useState({
+        staffName: "",
         isShowHideProfileDropdown: false,
     });
+
+    const getStaffData = useCallback(async () => {
+        const staffLoginData = await localStorage.getItem('staffData');
+        const staffName = JSON.parse(staffLoginData).staff_name;
+
+        setState((prevState) => ({
+            ...prevState,
+            staffName: staffName,
+        }))
+    }, [])
+
+    useEffect(() => {
+        (async () => {
+            await getStaffData();
+        })();
+    }, [getStaffData]);
 
     const handleShowHideProfileOption = () => {
         setState((prevState) => ({
@@ -33,10 +50,11 @@ const AppHeaderComp = (props) => {
             <img src={ BrandLogo } className="brand__logo" alt="Brand Logo" />
 
             <div className="user-name__wrapper">
-                <h3 className="admin__name">Admin</h3>
+                <p className="home__menu"><Link to="/staff_dashboard" >Home</Link></p>
                 <span onClick={ handleShowHideProfileOption } className="dropdown-toggle profile__dropdown">
                     <img src={ ProfileAvatar } alt="Profile User" className="rounded-avatar"/>
                 </span>
+                <h3 className="admin__name">{state.staffName}</h3>
             </div>
             {
                 (state.isShowHideProfileDropdown) ? (

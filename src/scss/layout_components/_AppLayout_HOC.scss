@@ -33,13 +33,25 @@
       align-items: center;
       color: #006874;
 
-      .admin__name {
-        margin-right: 8px;
+      .home__menu {
+        margin-right: 15px;
         margin-top: 5px;
-        font-size: 1.5rem;
+        font-size: 1.3rem;
         font-weight: bold;
+
+        a {
+          color: #006874;
+
+          &:hover {
+            color: #009cae !important;
+            text-decoration: none;
+            transition: 0.5s ease !important;
+          };
+        };
+
       };
       .profile__dropdown {
+        margin-right: 8px;
         cursor: pointer;
 
         .rounded-avatar {
@@ -47,6 +59,11 @@
           width: 25px;
           border-radius: 50px;
         };
+      };
+      .admin__name {
+        margin-top: 5px;
+        font-size: 1.5rem;
+        font-weight: bold;
       };
     };
 

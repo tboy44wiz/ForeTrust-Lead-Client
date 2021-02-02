@@ -4,7 +4,13 @@ import axios from "axios";
 import { toast } from 'react-toastify';
 
 import {leadValidation, staffLogin} from "../utils/Yup_Validator";
-import {createLeads_url, deleteSingleLead_url, getAllLeads_url, staff_login_url} from "../routes/API_Routes";
+import {
+    createLeads_url,
+    deleteSingleLead_url,
+    getAllLeads_url,
+    staff_login_url,
+    updateSingleLead_url
+} from "../routes/API_Routes";
 
 //  Import React Toastify CSS.
 import 'react-toastify/dist/ReactToastify.css';
@@ -30,12 +36,15 @@ class AppContextProvider extends React.Component {
                 purpose: ""
             },
             leads: [],
+
             email: '',
             password: '',
+
             infoMessage: "",
             showPassword: false,
             isLoading: false,
             isAuthenticated: false,
+            isEditMood: false,
         }
     }
 
@@ -65,6 +74,21 @@ class AppContextProvider extends React.Component {
             lead: {
                 ...this.state.lead,
                 [event.target.name]: event.target.value,
+            },
+        });
+    };
+
+    // Clear the Form.
+    clearFormInputFields = () => {
+        this.setState({
+            ...this.state,
+            lead: {
+                leads_name: "",
+                leads_email: "",
+                leads_phone: "",
+                leads_state: "",
+                leads_address: "",
+                purpose: ""
             },
         });
     };
@@ -289,8 +313,92 @@ class AppContextProvider extends React.Component {
         }
     };
 
+    //  Create Single Lead.
+    updateLead = async (event, leadId) => {
+        event.preventDefault();
+
+        //  Clear the state infoMessage and set showPassword to "false".
+        this.setState({
+            ...this.state,
+            infoMessage: "",
+            isLoading: true,
+        });
+
+        //  Destructure the required form data from the state.
+        const { leads_name, leads_email, leads_phone, leads_state, leads_address, purpose } = this.state.lead;
+
+        //  Validate the form data which is the "reqBody" using yup and then call the API.
+        try {
+            const leadData = await leadValidation.validate({
+                leads_name,
+                leads_email,
+                leads_phone,
+                leads_state,
+                leads_address,
+                purpose,
+            });
+
+            //  Get the Token.
+            const staffLoginData = await localStorage.getItem('staffData');
+
+            let token;
+            if (staffLoginData !== null) {
+                token = JSON.parse(staffLoginData).token;
+            }
+
+
+            //  Make POST Call to the EndPoint
+            const response = await axios({
+                method: "put",
+                url: `${updateSingleLead_url}/${leadId}`,
+                data: leadData,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `${token}`
+                },
+            });
+
+            if (response.data.success) {
+                const successMessage = response.data.message;
+                const leads = response.data.data.leads;
+                this.successToast(successMessage);
+
+                // Save to State.
+                this.setState({
+                    ...this.state,
+                    isLoading: false,
+                    leads: leads,
+                });
+
+                //  Call the "handleFetchLeads()" method again.
+                // return await this.handleFetchLeads();
+            }
+            // Reset State.
+            return this.setState({
+                ...this.state,
+                isLoading: false,
+            });
+        }
+        catch (error) {
+            const errorMessage = error.response.data.message;
+            this.errorToast(errorMessage);
+            this.setState({
+                ...this.state,
+                isLoading: false,
+                isCreateLeadSuccessful: false,
+            });
+        }
+    };
+
     //  Delete Single Lead.
-    handleDeleteLead = async (leadId) => {
+    deleteLead = async (leadId) => {
+
+        //  Clear the state infoMessage and set showPassword to "false".
+        this.setState({
+            ...this.state,
+            infoMessage: "",
+            isLoading: true,
+        });
 
         try {
             //  Get the Token.
@@ -324,8 +432,13 @@ class AppContextProvider extends React.Component {
                 });
 
                 //  Call the "handleFetchLeads()" method again.
-                // await this.handleFetchLeads();
+                // return await this.handleFetchLeads();
             }
+            // Reset State.
+            return this.setState({
+                ...this.state,
+                isLoading: false,
+            });
         }
         catch (error) {
             const status = error.response.status;
@@ -348,6 +461,20 @@ class AppContextProvider extends React.Component {
         }
     };
 
+    //  Extract a Single Lead from the Leads Array.
+    extractSingleLead = (leadId) => {
+        //  Extract a Single Lead item based on the one that was selected.
+        const selectedLead = this.state.leads.filter((eachLead) => {
+            return eachLead.id === leadId;
+        })[0];
+
+        //  Update the State with the single Lead item.
+        this.setState({
+            ...this.state,
+            isEditMood: true,
+            lead: selectedLead,
+        });
+    };
 
     render() {
         return (
@@ -359,7 +486,10 @@ class AppContextProvider extends React.Component {
                 handleLoginUser: this.handleLoginUser,
                 createLead: this.createLead,
                 handleFetchLeads: this.handleFetchLeads,
-                handleDeleteLead: this.handleDeleteLead,
+                updateLead: this.updateLead,
+                deleteLead: this.deleteLead,
+                extractSingleLead: this.extractSingleLead,
+                clearFormInputFields: this.clearFormInputFields,
             }}>
                 { this.props.children }
             </AppStoreContext.Provider>

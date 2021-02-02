@@ -1,5 +1,7 @@
-import React from 'react';
+import React, {useContext, useEffect} from 'react';
 
+/*==== Import AppStoreContext HOC ====*/
+import {AppStoreContext} from "../../contexts/AppContextProvider";
 
 /*==== Import ProtectedRouteHoc and AppLayoutHOC HOC ====*/
 import ProtectedRouteHOC from '../auth_components/ProtectedRoute_HOC';
@@ -17,9 +19,16 @@ import {SiGoogleads} from "react-icons/si";
 
 const StaffDashBoardComp = (props) => {
 
+    const { leads, handleFetchLeads } = useContext(AppStoreContext);
+
+    useEffect(() => {
+        handleFetchLeads();
+    }, [handleFetchLeads]);
+
+
     const goToLeadsComp = () => {
         props.history.push("/leads");
-    }
+    };
 
     return (
         <ProtectedRouteHOC>
@@ -37,8 +46,8 @@ const StaffDashBoardComp = (props) => {
                                 onClick={ goToLeadsComp }
                                 className="mCard mCard__item item__one">
                                 <div>
-                                    <h2>12</h2>
-                                    <p>Leads</p>
+                                    <h2>{ leads.length }</h2>
+                                    <p>Lead(s)</p>
                                 </div>
                                 <SiGoogleads className="mCard__item--icon t-event__icon" />
                             </div>
