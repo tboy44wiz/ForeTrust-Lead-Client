@@ -54,7 +54,7 @@ const StaffDashBoardComp = (props) => {
 
                             <div className="mCard mCard__item item__two">
                                 <div>
-                                    <h2>11</h2>
+                                    <h2>0</h2>
                                     <p>Projects</p>
                                 </div>
                                 <AiOutlineProject className="mCard__item--icon c-event__icon" />
@@ -62,7 +62,7 @@ const StaffDashBoardComp = (props) => {
 
                             <div className="mCard mCard__item item__three">
                                 <div>
-                                    <h2>1</h2>
+                                    <h2>0</h2>
                                     <p>Upcoming</p>
                                 </div>
                                 <MdEventNote className="mCard__item--icon un-event__icon" />
