@@ -13,7 +13,8 @@ import AppContextProvider from "./contexts/AppContextProvider";
 * ===================================================================================================*/
 import LoginComp from "./comonents/auth_components/Login_Comp";
 import StaffDashBoardComp from "./comonents/pages_componens/StaffDashBoard_Comp";
-import LeadsComp from "./comonents/pages_componens/Leads_Comp";
+import LeadsComp from "./comonents/pages_componens/leads/Leads_Comp";
+import LeadDetailsComp from "./comonents/pages_componens/leads/LeadDetails_Comp";
 
 const App = () => {
     return (
@@ -25,9 +26,12 @@ const App = () => {
                     {/*======================== Landing Page =======================*/}
                     <Route exact path="/" component={ LoginComp } />
 
-                    {/*=============================================================*/}
+                    {/*=========================== STAFF ===========================*/}
                     <Route exact path="/staff_dashboard" component={ StaffDashBoardComp } />
+
+                    {/*=========================== LEADS ===========================*/}
                     <Route exact path="/leads" component={ LeadsComp } />
+                    <Route exact path="/leads_details/:id" component={ LeadDetailsComp } />
 
                 </AppContextProvider>
             </Router>

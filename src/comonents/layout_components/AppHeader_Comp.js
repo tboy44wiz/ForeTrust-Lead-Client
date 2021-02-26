@@ -35,7 +35,7 @@ const AppHeaderComp = (props) => {
     }, [getStaffData]);
 
     const handleShowHideProfileOption = () => {
-        setState((prevState) => ({
+        setState(prevState => ({
             ...prevState,
             isShowHideProfileDropdown: !state.isShowHideProfileDropdown,
         }));
@@ -47,7 +47,9 @@ const AppHeaderComp = (props) => {
 
     return (
         <div className="AppHeaderComp">
-            <img src={ BrandLogo } className="brand__logo" alt="Brand Logo" />
+            <Link to="/staff_dashboard" >
+                <img src={ BrandLogo } className="brand__logo" alt="Brand Logo" />
+            </Link>
 
             <div className="user-name__wrapper">
                 <p className="home__menu"><Link to="/staff_dashboard" >Home</Link></p>

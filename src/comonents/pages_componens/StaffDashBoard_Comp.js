@@ -19,6 +19,7 @@ import {SiGoogleads} from "react-icons/si";
 
 const StaffDashBoardComp = (props) => {
 
+    //  Global State.
     const { leads, handleFetchLeads } = useContext(AppStoreContext);
 
     useEffect(() => {

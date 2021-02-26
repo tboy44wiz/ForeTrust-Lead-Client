@@ -17,15 +17,18 @@ import jwt_decode from "jwt-decode";
 
 const LoginComp = (props) => {
 
+    // Global State
     const { email, password, isLoading, showPassword, handleInputChange, handleShowPassword, handleLoginUser } = useContext(AppStoreContext);
+
+    //  Internal State.
+    const [state, setState] = useState({
+        isAuthenticated: false
+    });
 
     useEffect( () => {
         checkLoginStatus();
     });
 
-    const [state, setState] = useState({
-        isAuthenticated: false
-    });
 
     const checkTokenExpiration = (staffLoginData) => {
 
