@@ -1,5 +1,4 @@
 import React from 'react';
-import {Link} from "react-router-dom";
 
 //  Import _AppLayout_HOC scss.
 import '../../scss/layout_components/_AppLayout_HOC.scss';
