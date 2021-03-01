@@ -6,8 +6,6 @@ import {AiOutlineProject} from "react-icons/ai";
 import {MdEventNote} from "react-icons/md";
 import {SiGoogleads} from "react-icons/si";
 
-import {css} from "@emotion/react";
-
 /*==== Import AppStoreContext HOC ====*/
 import {AppStoreContext} from "../../../contexts/AppContextProvider";
 
