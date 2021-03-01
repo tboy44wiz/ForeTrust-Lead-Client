@@ -1,21 +1,25 @@
 import React, {useContext, useEffect} from 'react';
-
-/*==== Import AppStoreContext HOC ====*/
-import {AppStoreContext} from "../../contexts/AppContextProvider";
-
-/*==== Import ProtectedRouteHoc and AppLayoutHOC HOC ====*/
-import ProtectedRouteHOC from '../auth_components/ProtectedRoute_HOC';
-import AppLayoutHOC from "../layout_components/AppLayout_HOC";
-
-//  Import _StaffDashBoard_Comp scss.
-import '../../scss/pages_components_scss/_StaffDashBoard_Comp.scss';
+import { toast } from 'react-toastify';
 
 //  Import React-Icons.
 import {AiOutlineProject} from "react-icons/ai";
 import {MdEventNote} from "react-icons/md";
 import {SiGoogleads} from "react-icons/si";
 
-//  Import Images.
+import {css} from "@emotion/react";
+
+/*==== Import AppStoreContext HOC ====*/
+import {AppStoreContext} from "../../../contexts/AppContextProvider";
+
+/*==== Import ProtectedRouteHoc and AppLayoutHOC HOC ====*/
+import ProtectedRouteHOC from '../../auth_components/ProtectedRoute_HOC';
+import AppLayoutHOC from "../../layout_components/AppLayout_HOC";
+
+//  Import React Toastify CSS.
+import 'react-toastify/dist/ReactToastify.css';
+
+//  Import _StaffDashBoard_Comp scss.
+import '../../../scss/pages_components_scss/staff/_StaffDashBoard_Comp.scss';
 
 const StaffDashBoardComp = (props) => {
 
@@ -25,6 +29,11 @@ const StaffDashBoardComp = (props) => {
     useEffect(() => {
         handleFetchLeads();
     }, [handleFetchLeads]);
+
+    //  React Toast  Custom Methods.
+    const warningToast = (message) => {
+        return toast.warning(message, { hideProgressBar: true });
+    };
 
 
     const goToLeadsComp = () => {
@@ -53,7 +62,9 @@ const StaffDashBoardComp = (props) => {
                                 <SiGoogleads className="mCard__item--icon t-event__icon" />
                             </div>
 
-                            <div className="mCard mCard__item item__two">
+                            <div
+                                onClick={ () => warningToast("This feature unavailable.") }
+                                className="mCard mCard__item item__two">
                                 <div>
                                     <h2>0</h2>
                                     <p>Projects</p>
@@ -61,7 +72,9 @@ const StaffDashBoardComp = (props) => {
                                 <AiOutlineProject className="mCard__item--icon c-event__icon" />
                             </div>
 
-                            <div className="mCard mCard__item item__three">
+                            <div
+                                onClick={ () => warningToast("This feature unavailable.") }
+                                className="mCard mCard__item item__three">
                                 <div>
                                     <h2>0</h2>
                                     <p>Upcoming</p>

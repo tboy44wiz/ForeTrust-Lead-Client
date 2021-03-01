@@ -12,9 +12,10 @@ import AppContextProvider from "./contexts/AppContextProvider";
 *                               Components Imports.
 * ===================================================================================================*/
 import LoginComp from "./comonents/auth_components/Login_Comp";
-import StaffDashBoardComp from "./comonents/pages_componens/StaffDashBoard_Comp";
+import StaffDashBoardComp from "./comonents/pages_componens/staff/StaffDashBoard_Comp";
 import LeadsComp from "./comonents/pages_componens/leads/Leads_Comp";
 import LeadDetailsComp from "./comonents/pages_componens/leads/LeadDetails_Comp";
+import StaffProfileComp from "./comonents/pages_componens/staff/StaffProfile_Comp";
 
 const App = () => {
     return (
@@ -28,6 +29,7 @@ const App = () => {
 
                     {/*=========================== STAFF ===========================*/}
                     <Route exact path="/staff_dashboard" component={ StaffDashBoardComp } />
+                    <Route exact path="/staff_profile" component={ StaffProfileComp } />
 
                     {/*=========================== LEADS ===========================*/}
                     <Route exact path="/leads" component={ LeadsComp } />

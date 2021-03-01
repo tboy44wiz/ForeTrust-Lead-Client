@@ -5,6 +5,7 @@ const base_url = "http://localhost:5000/api/v1";
 //  Auth routes.
 export const user_registration_url = `${base_url}/auth/signup`;
 export const staff_login_url = `${base_url}/staff/login`;
+export const getSingleStaff_url = `${base_url}/staff/single_staff`;
 
 // Leads routes.
 export const createLeads_url = `${base_url}/lead/create_lead`;

@@ -61,7 +61,7 @@ const AppHeaderComp = (props) => {
             {
                 (state.isShowHideProfileDropdown) ? (
                     <div className="drop-down-menu dropdown-menu-right">
-                        <Link to="#" className="profile-dropdown__item has-icon">
+                        <Link to="/staff_profile" className="profile-dropdown__item has-icon">
                             <RiUser6Line className="dropdown__icon" /> Profile
                         </Link>
                         <Link to="#" onClick={ logoutUser } className="profile-dropdown__item has-icon">

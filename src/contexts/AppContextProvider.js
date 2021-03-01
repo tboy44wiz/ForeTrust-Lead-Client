@@ -8,7 +8,7 @@ import {
     createLeads_url, createNote_url,
     deleteSingleLead_url, deleteSingleNote_url,
     getAllLeads_url,
-    getSingleLead_url,
+    getSingleLead_url, getSingleStaff_url,
     staff_login_url, updateNote_url,
     updateSingleLead_url
 } from "../routes/API_Routes";
@@ -80,13 +80,13 @@ class AppContextProvider extends React.Component {
 
     //  React Toast  Custom Methods.
     successToast = (message) => {
-        return toast.success(message);
+        return toast.success(message, { hideProgressBar: true });
     };
     warningToast = (message) => {
-        return toast.warning(message, {autoClose: 2000});
+        return toast.warning(message, { hideProgressBar: true });
     }
     errorToast = (message) => {
-        return toast.error(message);
+        return toast.error(message, { hideProgressBar: true });
     };
 
     //  Input Change Handler.
@@ -201,6 +201,73 @@ class AppContextProvider extends React.Component {
                 infoMessage: "Something went wrong. Please try again.",
                 isLoading: false,
                 isAuthenticated: false,
+            });
+        }
+        catch (error) {
+            let errorMessage;
+            if (error.errors) {
+                errorMessage = error.errors[0]
+                this.errorToast(errorMessage);
+            }
+            else {
+                errorMessage = error.response.data.message;
+                this.errorToast(errorMessage);
+            }
+            this.setState({
+                ...this.state,
+                isLoading: false,
+            });
+        }
+    };
+
+    //  Get Single Staff.
+    getSingleStaff = async () => {
+
+        //  Clear the state infoMessage and set showPassword to "false".
+        this.setState({
+            ...this.state,
+            infoMessage: "",
+            isLoading: true,
+        });
+
+
+        //  Then call the API.
+        try {
+
+            //  Get Staff Data from the Browsers Local Storage.
+            let staffLoginData = await localStorage.getItem("staffData");
+            let staffId = "";
+            if (staffLoginData !== null) {
+                const parsedStaffData = JSON.parse(staffLoginData);
+                staffId = parsedStaffData.id;
+            }
+
+            //  Make POST Call to the EndPoint
+            const response = await axios({
+                method: "get",
+                url: `${getSingleStaff_url}/${staffId}`,
+                headers: { 'Content-Type': 'application/json' },
+            });
+
+            const success = response.data.success;
+            const data = response.data.data;
+            if (success) {
+
+                // console.log(this.state.staff);
+
+                //  Update the date with the necessary data.
+                return this.setState({
+                    ...this.state,
+                    staff:data,
+                    isLoading: false,
+                    isAuthenticated: true,
+                });
+            }
+
+            //  Update the State.
+            return this.setState({
+                ...this.state,
+                isLoading: false,
             });
         }
         catch (error) {
@@ -909,6 +976,7 @@ class AppContextProvider extends React.Component {
                 ...this.state,
                 handleShowPassword: this.handleShowPassword,
                 handleLoginUser: this.handleLoginUser,
+                getSingleStaff: this.getSingleStaff,
 
                 handleInputChange: this.handleInputChange,
                 handleLeadInputChange: this.handleLeadInputChange,
