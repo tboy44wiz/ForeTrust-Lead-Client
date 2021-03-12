@@ -5,12 +5,8 @@ import { toast } from 'react-toastify';
 
 import { leadValidation, noteValidation, staffLogin } from "../utils/Yup_Validator";
 import {
-    createLeads_url, createNote_url,
-    deleteSingleLead_url, deleteSingleNote_url,
-    getAllLeads_url,
-    getSingleLead_url, getSingleStaff_url,
-    staff_login_url, updateNote_url,
-    updateSingleLead_url
+    createLeads_url, createNote_url, deleteSingleLead_url, deleteSingleNote_url, getAllLeads_url, getSingleLead_url,
+    getSingleStaff_url, staff_login_url, updateNote_url, updateSingleLead_url
 } from "../routes/API_Routes";
 
 //  Import React Toastify CSS.
@@ -132,7 +128,7 @@ class AppContextProvider extends React.Component {
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////// AUTH /////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////// AUTH & STAFF ////////////////////////////////////////////////////
     //  Handle Show Password.
     handleShowPassword = () => {
         this.setState({
@@ -642,6 +638,7 @@ class AppContextProvider extends React.Component {
                 //  Call the "handleFetchLeads()" method again.
                 // return await this.handleFetchLeads();
             }
+
             // Reset State.
             return this.setState({
                 ...this.state,
@@ -727,6 +724,7 @@ class AppContextProvider extends React.Component {
                 //  Recall "handleFetchSingleLead()" function.
                 return await this.handleFetchSingleLead(leads_id);
             }
+
             // Reset State.
             return this.setState({
                 ...this.state,
@@ -816,6 +814,7 @@ class AppContextProvider extends React.Component {
                 //  Recall "handleFetchSingleLead()" function.
                 return await this.handleFetchSingleLead(leads_id);
             }
+
             // Reset State.
             return this.setState({
                 ...this.state,
@@ -922,6 +921,7 @@ class AppContextProvider extends React.Component {
             showLeadModal: true,
         });
     };
+
     //  When "Edit Lead" button is clicked.
     handleCreateSingleLead = () => {
         this.setState({
@@ -934,6 +934,7 @@ class AppContextProvider extends React.Component {
         });
 
     };
+
     //  When "Edit Lead" button is clicked.
     handleEditSingleLead = (event, leadId) => {
         this.setState({
@@ -945,6 +946,7 @@ class AppContextProvider extends React.Component {
             this.handleShowLeadModal();
         });
     };
+
     //  When "Cancel" Modal is shown.
     handleShowCancelModal = () => {
         this.setState((prevState) => ({
@@ -952,6 +954,7 @@ class AppContextProvider extends React.Component {
             showCancelModal: true
         }));
     };
+
     //  When "Main Modal" is closed.
     handleCloseLeadModal = () => {
         this.handleCloseCancelModal();
@@ -959,6 +962,7 @@ class AppContextProvider extends React.Component {
             showLeadModal: false,
         });
     };
+
     //  When "Confirm Cancel Modal" is closed.
     handleCloseCancelModal = () => {
         // Clear the Form based on condition.
