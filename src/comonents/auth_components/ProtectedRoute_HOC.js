@@ -80,7 +80,7 @@ const ProtectedRouteHOC = (props) => {
         // checkLoginStatus();
         (async () => {
             await checkLoginStatus()
-        })()
+        })();
     }, [checkLoginStatus]);
 
 

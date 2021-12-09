@@ -15,7 +15,7 @@ import 'react-toastify/dist/ReactToastify.css';
 export const AppStoreContext = createContext(undefined);
 
 
-//  Call th Toast Configuration method.
+//  Call the Toast Configuration method.
 toast.configure();
 
 class AppContextProvider extends React.Component {
@@ -152,7 +152,6 @@ class AppContextProvider extends React.Component {
         //  Destructure the required form data from the state.
         const { email, password } = this.state;
 
-
         //  Then call the API.
         try {
             //  Validate the form data which is the "reqBody" using yup.
@@ -200,7 +199,7 @@ class AppContextProvider extends React.Component {
             });
         }
         catch (error) {
-            let errorMessage;
+            /*let errorMessage;
             if (error.errors) {
                 errorMessage = error.errors[0]
                 this.errorToast(errorMessage);
@@ -212,7 +211,8 @@ class AppContextProvider extends React.Component {
             this.setState({
                 ...this.state,
                 isLoading: false,
-            });
+            });*/
+            console.log(error);
         }
     };
 
@@ -380,7 +380,7 @@ class AppContextProvider extends React.Component {
 
         try {
             //  Get the Token.
-            const staffLoginData = await localStorage.getItem('staffData');
+            const staffLoginData = localStorage.getItem('staffData');
 
             let token;
             if (staffLoginData !== null) {

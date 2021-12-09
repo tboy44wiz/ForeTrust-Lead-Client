@@ -9,6 +9,7 @@ const AppLayoutHOC = (props) => {
             {/*==== Header ====*/}
             <AppHeaderComp />
 
+            {/*==== Body ====*/}
             <div className="app-body__wrapper">
                 { props.children }
             </div>

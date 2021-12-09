@@ -25,11 +25,6 @@ const LoginComp = (props) => {
         isAuthenticated: false
     });
 
-    useEffect( () => {
-        checkLoginStatus();
-    });
-
-
     const checkTokenExpiration = (staffLoginData) => {
 
         if (staffLoginData !== null) {
@@ -62,6 +57,12 @@ const LoginComp = (props) => {
             }
         }
     }
+
+
+    useEffect( () => {
+        checkLoginStatus();
+    });
+
 
     if (state.isAuthenticated) {
         return <Redirect to="/staff_dashboard" />
